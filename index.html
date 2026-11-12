@@ -188,7 +188,9 @@ nav a:hover { color:#fff; }
   z-index: 2;
   padding: 120px 56px 60px;
   width: 100%;
-  max-width: 660px;
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: 56px;
 }
 
 .hero-logo-wrap {
@@ -214,9 +216,9 @@ nav a:hover { color:#fff; }
 
 .hero-title {
   font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
-  font-size: clamp(28px, 4.2vw, 62px);
+  font-size: clamp(36px, 5.8vw, 86px);
   color: #fff;
-  line-height: 1.05;
+  line-height: 1.03;
   font-weight: 800;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -929,9 +931,9 @@ footer {
 
   /* Kurumsal section headings */
   .section-heading {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 900;
-    letter-spacing: 0.06em;
+    font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     position: relative;
     display: block;
@@ -939,6 +941,7 @@ footer {
     white-space: normal;
     word-break: break-word;
     overflow-wrap: break-word;
+    line-height: 1.08;
   }
   .section-heading em {
     font-style: normal;
@@ -1012,8 +1015,8 @@ footer {
     .hero { min-height: 100svh; overflow: hidden; align-items: flex-end; }
     .hero-bg-img img { object-position: center top; }
     .hero-overlay { background: linear-gradient(to top, rgba(5,8,20,0.95) 0%, rgba(5,8,20,0.6) 50%, rgba(5,8,20,0.2) 100%) !important; }
-    .hero-inner { padding: 40px 20px 60px; max-width: 100%; }
-    .hero-title { font-size: clamp(22px, 7vw, 42px) !important; letter-spacing: 0.02em; white-space: normal; word-break: break-word; }
+    .hero-inner { padding: 40px 20px 60px; max-width: 100%; margin-left: 0; margin-right: 0; }
+    .hero-title { font-size: clamp(28px, 8vw, 52px) !important; letter-spacing: 0.02em; white-space: normal; word-break: break-word; }
     .hero-title .gold { font-size: 1.05em; white-space: normal; }
     .hero-sub { font-size: 13px; max-width: 100%; white-space: normal; }
     .hero-actions { flex-direction: column; gap: 12px; align-items: flex-start; }
@@ -1066,7 +1069,7 @@ footer {
   @media (max-width: 480px) {
     .cat-grid { grid-template-columns: 1fr; }
     .cat-sub-grid { grid-template-columns: 1fr; }
-    .hero-title { font-size: clamp(20px, 8vw, 36px) !important; }
+    .hero-title { font-size: clamp(24px, 9vw, 46px) !important; }
     nav a:not(.btn-nav) { display: none; }
     .btn-nav { padding: 9px 16px !important; font-size: 12px !important; }
     section { padding: 36px 0; }
