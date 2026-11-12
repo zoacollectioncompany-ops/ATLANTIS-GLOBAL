@@ -946,23 +946,6 @@ footer {
   }
 
   /* Daktilo efekti */
-  .typewriter-wrap {
-    overflow: hidden;
-    text-align: center;
-    margin-bottom: 8px;
-  }
-  .typewriter {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 2px solid var(--gold);
-    animation: typing 1.8s steps(40,end) forwards, blink .75s step-end 1.8s 3;
-    max-width: 0;
-  }
-  .typewriter.done {
-    border-right-color: transparent;
-    max-width: 100%;
-  }
   @keyframes typing {
     from { max-width: 0; }
     to   { max-width: 100%; }
@@ -1182,7 +1165,7 @@ src="https://www.facebook.com/tr?id=1019076720844931&ev=PageView&noscript=1"
       </div>
       <div class="founder-text reveal">
         <span class="label">Hakkımızda</span>
-        <div class="typewriter-wrap"><h2 class="section-heading typewriter">Her Projede <em>Kaliteyi,</em> Her Süreçte <em>Güveni</em> Önceliğimiz Yapıyoruz</h2></div>
+        <h2 class="section-heading">Her Projede <em>Kaliteyi,</em> Her Süreçte <em>Güveni</em> Önceliğimiz Yapıyoruz</h2>
         <p>Tadilat ve dekorasyon; uzmanlık, deneyim ve profesyonel yaklaşım gerektiren bir süreçtir. Atlantis Tadilat olarak, bu süreci baştan sona planlayan ve yöneten bir anlayışla hizmet sunuyoruz.</p>
         <p>Yaşam alanlarınızı dönüştürürken yalnızca uygulama değil, güven, şeffaflık ve sorunsuz bir süreç sunmayı hedefliyoruz. Alanında deneyimli ekibimiz ve uzman kadromuzla, her projeyi yüksek kalite standartlarında ele alıyoruz.</p>
         <blockquote class="founder-quote">"Tüm tadilat ve dekorasyon sürecinizde güvenilir çözüm ortağınız olarak yanınızdayız."</blockquote>
@@ -1214,7 +1197,7 @@ src="https://www.facebook.com/tr?id=1019076720844931&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-intro reveal">
       <span class="label">Hizmetlerimiz</span>
-      <div class="typewriter-wrap"><h2 class="section-heading typewriter">Her Mekâna <em>Özel Çözüm</em></h2></div>
+      <h2 class="section-heading">Her Mekâna <em>Özel Çözüm</em></h2>
       <p>Komple tadilattan özel yapı projelerine kadar geniş hizmet yelpazemizle, tasarımdan uygulamaya tüm süreci yönetiyoruz.</p>
     </div>
     <div class="services-grid reveal">
@@ -1267,7 +1250,7 @@ src="https://www.facebook.com/tr?id=1019076720844931&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-intro reveal">
       <span class="label">Nasıl Çalışıyoruz?</span>
-      <div class="typewriter-wrap"><h2 class="section-heading typewriter">Keşiften Teslime <em>4 Adım</em></h2></div>
+      <h2 class="section-heading">Keşiften Teslime <em>4 Adım</em></h2>
       <p>Her proje aynı titizlikle yönetilir. Sizi her aşamada bilgilendiririz, hiçbir sürpriz olmaz.</p>
     </div>
     <div class="process-grid reveal">
@@ -1300,7 +1283,7 @@ src="https://www.facebook.com/tr?id=1019076720844931&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-intro reveal">
       <span class="label">Yapılan Projeler</span>
-      <div class="typewriter-wrap"><h2 class="section-heading typewriter">Tamamlanan <em>Dönüşümler</em></h2></div>
+      <h2 class="section-heading">Tamamlanan <em>Dönüşümler</em></h2>
     </div>
 
     <div class="cat-grid reveal">
@@ -1392,7 +1375,7 @@ src="https://www.facebook.com/tr?id=1019076720844931&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-intro reveal">
       <span class="label">Müşteri Yorumları</span>
-      <div class="typewriter-wrap"><h2 class="section-heading typewriter">Onlar <em>Anlatsın</em></h2></div>
+      <h2 class="section-heading">Onlar <em>Anlatsın</em></h2>
       <p>Tamamladığımız projelerden memnun müşterilerimizin görüşleri.</p>
     </div>
     <div class="testi-grid reveal">
@@ -1448,7 +1431,7 @@ src="https://www.facebook.com/tr?id=1019076720844931&ev=PageView&noscript=1"
     <div class="contact-grid">
       <div class="contact-info reveal">
         <span class="label">Ücretsiz Keşif</span>
-        <div class="typewriter-wrap"><h2 class="section-heading typewriter">Projenizi <em>Konuşalım</em></h2></div>
+        <h2 class="section-heading">Projenizi <em>Konuşalım</em></h2>
         <p>Ücretsiz keşif ve teklif için bize ulaşın. 24 saat içinde dönüş yaparak süreci birlikte planlayalım.</p>
         <div class="contact-items">
           <div class="contact-item">
@@ -1660,21 +1643,7 @@ setTimeout(function(){document.getElementById('splash').classList.add('hide');},
 
 <script>
 // Typewriter IntersectionObserver
-(function() {
-  var elements = document.querySelectorAll('.typewriter');
-  if (!elements.length) return;
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-        entry.target.classList.add('animated');
-        entry.target.style.animation = 'typing 1.8s steps(40,end) forwards, blink .75s step-end 3s 3';
-        setTimeout(function() {
-          entry.target.style.borderRightColor = 'transparent';
-        }, 3200);
-      }
-    });
-  }, { threshold: 0.4 });
-  elements.forEach(function(el) { observer.observe(el); });
+(function() {  elements.forEach(function(el) { observer.observe(el); });
 })();
 </script>
 
