@@ -1695,45 +1695,64 @@ setTimeout(function(){document.getElementById('splash').classList.add('hide');},
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-// Mobilde cat-sub-grid'leri Swiper'a dönüştür
-function initMobileSwiper() {
+// Mobilde accordion açılınca Swiper init et
+var swiperInstances = {};
+
+function initGridSwiper(grid) {
   if (window.innerWidth > 768) return;
-  document.querySelectorAll('.cat-sub-grid').forEach(function(grid, i) {
-    if (grid.dataset.swiperInit) return;
-    grid.dataset.swiperInit = '1';
-    // Swiper wrapper yapısına çevir
-    var slides = Array.from(grid.querySelectorAll('.sub-card'));
-    var wrapper = document.createElement('div');
-    wrapper.className = 'swiper-wrapper';
-    slides.forEach(function(card) {
-      var slide = document.createElement('div');
-      slide.className = 'swiper-slide';
-      slide.appendChild(card);
-      wrapper.appendChild(slide);
-    });
-    grid.classList.add('swiper');
-    grid.appendChild(wrapper);
-    // Pagination
-    var pag = document.createElement('div');
-    pag.className = 'swiper-pagination';
-    grid.appendChild(pag);
-    new Swiper(grid, {
-      slidesPerView: 1.2,
-      spaceBetween: 12,
-      centeredSlides: false,
-      pagination: { el: pag, clickable: true },
-      breakpoints: { 480: { slidesPerView: 2, spaceBetween: 14 } }
-    });
+  if (grid.dataset.swiperInit) {
+    // Zaten init edilmiş — update et
+    var idx = grid.dataset.swiperIdx;
+    if (swiperInstances[idx]) {
+      swiperInstances[idx].update();
+    }
+    return;
+  }
+  grid.dataset.swiperInit = '1';
+  var idx = Date.now() + Math.random();
+  grid.dataset.swiperIdx = idx;
+
+  // Swiper wrapper yapısına çevir
+  var slides = Array.from(grid.querySelectorAll('.sub-card'));
+  var wrapper = document.createElement('div');
+  wrapper.className = 'swiper-wrapper';
+  slides.forEach(function(card) {
+    var slide = document.createElement('div');
+    slide.className = 'swiper-slide';
+    slide.appendChild(card);
+    wrapper.appendChild(slide);
+  });
+  grid.classList.add('swiper');
+  grid.innerHTML = '';
+  grid.appendChild(wrapper);
+
+  // Pagination
+  var pag = document.createElement('div');
+  pag.className = 'swiper-pagination';
+  grid.appendChild(pag);
+
+  swiperInstances[idx] = new Swiper(grid, {
+    slidesPerView: 1.15,
+    spaceBetween: 12,
+    centeredSlides: false,
+    grabCursor: true,
+    pagination: { el: pag, clickable: true, dynamicBullets: true },
+    breakpoints: { 480: { slidesPerView: 2, spaceBetween: 14 } }
   });
 }
 
 // Accordion açıldığında swiper init et
 document.querySelectorAll('.cat-cover').forEach(function(cover) {
   cover.addEventListener('click', function() {
-    setTimeout(initMobileSwiper, 100);
+    // Kapak tıklandığında üst .cat-item'ı bul
+    var catItem = cover.closest('.cat-item') || cover.parentElement;
+    // Accordion animasyonu bitmeden önce (300ms) init etme
+    setTimeout(function() {
+      var grid = catItem.querySelector('.cat-sub-grid');
+      if (grid) initGridSwiper(grid);
+    }, 320);
   });
 });
-initMobileSwiper();
 </script>
 
 </body>
