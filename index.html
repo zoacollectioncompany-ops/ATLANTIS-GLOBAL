@@ -1706,5 +1706,140 @@ setTimeout(function(){document.getElementById('splash').classList.add('hide');},
 </script>
 
 
+<!-- ============ ANİMASYON PAKETİ (ZOA) ============ -->
+<style>
+/* Kaydırma ilerleme çizgisi */
+.scroll-metre{position:fixed;top:0;left:0;width:100%;height:3px;z-index:9999;pointer-events:none}
+.scroll-metre span{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transform:scaleX(0);transform-origin:left;box-shadow:0 0 10px rgba(201,168,76,.6)}
+/* Splash bitene kadar hero animasyonları beklesin */
+body:not(.splash-done) .hero *{animation-play-state:paused!important}
+/* Kelime kelime yükselen başlıklar */
+.kw{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
+.kw>span{display:inline-block;transform:translateY(110%);transition:transform .8s cubic-bezier(.22,.8,.2,1);transition-delay:calc(var(--i)*70ms)}
+.kw-on .kw>span{transform:none}
+.hero-title.kw-split{animation:none!important;opacity:1!important}
+.hero-title.kw-split .kw>span{transition-duration:.9s;transition-delay:calc(var(--i)*90ms + 150ms)}
+/* Grup içi sıralı giriş */
+.stagger>*{opacity:0;transform:translateY(34px);transition:opacity .7s ease,transform .8s cubic-bezier(.22,.8,.2,1);transition-delay:calc(var(--g)*90ms)}
+.reveal.in .stagger>*,.stagger.in>*{opacity:1;transform:none}
+.services-grid.stagger,.process-grid.stagger,.testi-grid.stagger{opacity:1!important;transform:none!important}
+/* Kurucu fotoğrafı perde açılışı */
+.founder-img{clip-path:inset(0 0 100% 0);transition:clip-path 1.2s cubic-bezier(.77,0,.18,1)}
+.founder-img img{transform:scale(1.15);transition:transform 1.6s cubic-bezier(.22,.8,.2,1)}
+.reveal.in .founder-img{clip-path:inset(0)}
+.reveal.in .founder-img img{transform:scale(1)}
+.founder-badge{opacity:0;transform:translateY(20px) scale(.9);transition:all .7s cubic-bezier(.22,.8,.2,1) .7s}
+.reveal.in .founder-badge{opacity:1;transform:none}
+/* Süreç adımı numaraları */
+.process-step .step-num{transform:scale(0) rotate(-90deg);transition:transform .7s cubic-bezier(.34,1.56,.64,1);transition-delay:calc(var(--g)*120ms + 200ms)}
+.reveal.in .process-step .step-num{transform:none}
+/* Hero paralaks taşmasın */
+.hero-bg-img{overflow:hidden}
+/* Kart eğilme */
+.tilt{will-change:transform}
+@media (prefers-reduced-motion:reduce){
+  .kw>span,.stagger>*,.founder-img,.founder-img img,.founder-badge,.process-step .step-num{transition:none!important;transform:none!important;opacity:1!important;clip-path:none!important}
+  body:not(.splash-done) .hero *{animation-play-state:running!important}
+}
+</style>
+<div class="scroll-metre" aria-hidden="true"><span></span></div>
+<script>
+(function(){
+  'use strict';
+  var azalt=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ince=matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var $$=function(s,k){return Array.prototype.slice.call((k||document).querySelectorAll(s));};
+
+  // Splash kapanınca hero animasyonlarını başlat
+  var splash=document.getElementById('splash');
+  function basla(){document.body.classList.add('splash-done');var t=document.querySelector('.hero-title.kw-split');if(t)requestAnimationFrame(function(){t.classList.add('kw-on');});}
+  if(!splash){basla();}else{
+    var mo=new MutationObserver(function(){if(splash.classList.contains('hide')){mo.disconnect();basla();}});
+    mo.observe(splash,{attributes:true,attributeFilter:['class']});
+    setTimeout(basla,2600);
+  }
+  if(azalt){basla();}
+
+  // Başlıkları kelimelere böl (<em>, <br>, <span> korunur)
+  function bol(el){
+    var i=0;
+    (function yuru(n){
+      Array.prototype.slice.call(n.childNodes).forEach(function(c){
+        if(c.nodeType===3){
+          if(!c.textContent.trim())return;
+          var frag=document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function(p){
+            if(!p)return;
+            if(/^\s+$/.test(p)){frag.appendChild(document.createTextNode(' '));return;}
+            var w=document.createElement('span');w.className='kw';
+            var s=document.createElement('span');s.style.setProperty('--i',i++);s.textContent=p;
+            w.appendChild(s);frag.appendChild(w);
+          });
+          c.parentNode.replaceChild(frag,c);
+        }else if(c.nodeType===1&&c.tagName!=='BR'){yuru(c);}
+      });
+    })(el);
+    el.classList.add('kw-split');
+  }
+  if(!azalt){
+    $$('.section-heading, .hero-title').forEach(bol);
+    var bg=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('kw-on');bg.unobserve(e.target);}});},{threshold:.3});
+    $$('.section-heading').forEach(function(h){bg.observe(h);});
+  }
+
+  // Sıralı giriş grupları
+  $$('.services-grid, .process-grid, .testi-grid, .founder-pillars').forEach(function(g){
+    g.classList.add('stagger');
+    Array.prototype.slice.call(g.children).forEach(function(c,i){c.style.setProperty('--g',i%8);});
+  });
+  var sg=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');sg.unobserve(e.target);}});},{threshold:.12});
+  $$('.stagger').forEach(function(g){sg.observe(g);});
+
+  // Sayaç: 500+
+  function say(el){
+    var m=el.textContent.match(/^(\D*)(\d+)(.*)$/);if(!m)return;
+    var hedef=+m[2],bas=null,sure=1800;
+    el.textContent=m[1]+'0'+m[3];
+    (function adim(t){if(!bas)bas=t;var p=Math.min((t-bas)/sure,1);el.textContent=m[1]+Math.round(hedef*(1-Math.pow(1-p,3)))+m[3];if(p<1)requestAnimationFrame(adim);})(performance.now());
+  }
+  if(!azalt){
+    var sy=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){setTimeout(function(){say(e.target);},700);sy.unobserve(e.target);}});},{threshold:.5});
+    $$('.founder-badge .big').forEach(function(el){sy.observe(el);});
+  }
+
+  // Kaydırma: ilerleme çizgisi + hero paralaks
+  var metre=document.querySelector('.scroll-metre span');
+  var heroImg=document.querySelector('.hero-bg-img img');
+  var par=!azalt&&innerWidth>=900&&heroImg;
+  if(par){heroImg.style.willChange='transform';}
+  var bekle=false;
+  function kaydir(){
+    bekle=false;
+    var y=pageYOffset,h=document.documentElement.scrollHeight-innerHeight;
+    if(metre)metre.style.transform='scaleX('+(h>0?y/h:0)+')';
+    if(par&&y<innerHeight*1.2)heroImg.style.transform='translate3d(0,'+(y*.3).toFixed(1)+'px,0) scale(1.08)';
+  }
+  addEventListener('scroll',function(){if(!bekle){bekle=true;requestAnimationFrame(kaydir);}},{passive:true});
+  kaydir();
+
+  // Kartlarda fareyle 3D eğilme
+  if(ince&&!azalt){
+    $$('.service-card, .testi-card').forEach(function(el){
+      el.classList.add('tilt');
+      el.addEventListener('mousemove',function(e){
+        var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        el.style.transition='transform .15s ease-out, box-shadow .3s, border-color .3s';
+        el.style.transform='perspective(900px) translateY(-4px) rotateY('+(x*8).toFixed(2)+'deg) rotateX('+(-y*8).toFixed(2)+'deg)';
+      });
+      el.addEventListener('mouseleave',function(){
+        el.style.transition='transform .6s cubic-bezier(.22,.8,.2,1), box-shadow .3s, border-color .3s';
+        el.style.transform='';
+      });
+    });
+  }
+})();
+</script>
+<!-- ============ /ANİMASYON PAKETİ ============ -->
+
 </body>
 </html>
