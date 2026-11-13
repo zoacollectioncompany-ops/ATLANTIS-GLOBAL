@@ -1007,6 +1007,12 @@ footer {
   @media (max-width: 768px) {
     /* Nav */
     header .wrap { flex-wrap: wrap; gap: 8px; }
+    header, header.scrolled {
+      background: rgba(5,8,16,0.72) !important;
+      backdrop-filter: blur(12px) !important;
+      box-shadow: none !important;
+      padding: 14px 0 !important;
+    }
     nav { gap: 2px; flex-wrap: wrap; }
     nav a { font-size: 11px; padding: 6px 10px; }
     .logo-text strong { font-size: 14px; }
